@@ -1,7 +1,7 @@
 resource "azurerm_cognitive_account" "test" {
   name                = "takeda-account"
   location            = "${var.location}"
-  resource_group_name = "${azurerm_resource_group.hub_rg.name}"
+  resource_group_name = "${azurerm_resource_group.takeda_dev_rg.name}"
   kind                = "TextAnalytics"
 #   kind                = "TextAnalytics", "TextTranslation", "SpeakerRecognition", 
 #                          "CustomSpeech", "Speech", "SpeechServices", "SpeechTranslation", 
@@ -15,7 +15,22 @@ resource "azurerm_cognitive_account" "test" {
 
   sku {
     name = "S0"
-    tier = "Standard"
+    tier = "${var.sku_tier}"
+  }
+
+  tags = {
+    Acceptance = "Test"
+  }
+}
+
+resource "azurerm_cognitive_account" "test1" {
+  name                = "takeda-account"
+  location            = "${var.location}"
+  resource_group_name = "${azurerm_resource_group.takeda_dev_rg.name}"
+  kind                = "Face"
+  sku {
+    name = "S0"
+    tier = "${var.sku_tier}"
   }
 
   tags = {

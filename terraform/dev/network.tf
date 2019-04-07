@@ -1,8 +1,8 @@
 resource "azurerm_virtual_network" "takeda-dev-hub" {
-  name                = "takeda-dev-hub-vn"
+  name                = "${var.virtual_network_name}"
   address_space       = ["10.0.0.0/16"] #this will be automated according to the architecture
   location            = "${var.location}"
-  resource_group_name = "${azurerm_resource_group.hub_rg.name}"
+  resource_group_name = "${azurerm_resource_group.takeda_dev_rg.name}"
 
   tags = {
     environment = "${var.environment}"
@@ -11,20 +11,20 @@ resource "azurerm_virtual_network" "takeda-dev-hub" {
 }
 
 resource "azurerm_subnet" "internal" {
-  name                 = "takeda-dev-internal"
-  resource_group_name  = "${azurerm_resource_group.hub_rg.name}"
+  name                 = "${var.subnet_name}"
+  resource_group_name  = "${azurerm_resource_group.takeda_dev_rg.name}"
   virtual_network_name = "${azurerm_virtual_network.takeda-dev-hub.name}"
   address_prefix       = "10.0.2.0/24" #this will be automated according to the architecture
 }
 
 resource "azurerm_network_interface" "main" {
-  name                = "takeda-dev-nic"
+  name                = "${var.network_interface_name}"
   location            = "${var.location}"
-  resource_group_name = "${azurerm_resource_group.hub_rg.name}"
+  resource_group_name = "${azurerm_resource_group.takeda_dev_rg.name}"
 
   ip_configuration {
-    name                          = "takedatestconfiguration1"
+    name                          = "${var.network_interface_ip_configuration_name}"
     subnet_id                     = "${azurerm_subnet.internal.id}"
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "${var.network_interface_private_ip_address_allocation}"
   }
 }

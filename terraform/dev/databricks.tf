@@ -1,11 +1,11 @@
 resource "azurerm_databricks_workspace" "test" {
   name                = "takeda-databricks-test"
-  resource_group_name = "${azurerm_resource_group.hub_rg.name}"
-  sku                 = "standard"
+  resource_group_name = "${azurerm_resource_group.takeda_dev_rg.name}"
+  sku                 = "${var.sku_tier}"
   location            = "${var.location}"
 
   tags = {
-    Environment = "dev"
+    Environment = "${var.environment}"
     managed-by  = "terraform"
   }
  //managed_resource_group_name  = "${azurerm_managed_resource_group_name.databricks-rg.name}"
